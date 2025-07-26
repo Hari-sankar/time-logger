@@ -1,16 +1,25 @@
 
-import json
-from app.agents.chat_agent import agent_executor
-from typing import AsyncGenerator
+from langchain_core.messages import HumanMessage
+from app.agents.chat_agent import graph as chatbot 
 
 
-
-async def handle_chat(message: str) -> AsyncGenerator[str, None]:
+async def handle_chat(message: str, user_id: int,thread_id : str) -> str:
     """
-    Handles a chat message using the LangChain agent with built-in memory.
-    The agent executor now manages the chat history internally.
+    Handles a chat message using LangGraph agent with memory.
+    Returns the final response as a string.
     """
-    # Process the incoming message with the agent executor
-    async for chunk in agent_executor.astream({"input": message}):
-        if "output" in chunk:
-            yield chunk["output"]
+
+    config = {"configurable": {"thread_id": thread_id}}
+
+    input_data = {
+        "messages": [HumanMessage(content=message)],
+        "user_id": str(user_id)
+    }
+
+    result = await chatbot.ainvoke(input=input_data, config=config)
+
+    
+    final_message = result.get("messages")[-1]
+    
+    if hasattr(final_message, "content"):
+        return final_message.content
