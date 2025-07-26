@@ -8,6 +8,8 @@ class Settings(BaseSettings):
     GOOGLE_API_KEY: str
     MIGRATION: bool 
     LLM_MODEL: str 
+    JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str
 
 
 settings = Settings()
