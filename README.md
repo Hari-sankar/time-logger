@@ -103,7 +103,7 @@ The key features include:
 ## Usage
 
 1.  **Register a new user:**
-    Send a `POST` request to `/register` with a username and password.
+    Send a `POST` request to `/signup` with a username and password.
 
 2.  **Log in:**
     Send a `POST` request to `/login` to get a JWT token.
