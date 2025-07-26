@@ -6,6 +6,8 @@ class Settings(BaseSettings):
 
     DATABASE_URL: str
     GOOGLE_API_KEY: str
+    MIGRATION: bool 
+    LLM_MODEL: str 
 
 
 settings = Settings()
