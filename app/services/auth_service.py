@@ -12,7 +12,6 @@ async def login(loginRequest:LoginRequest):
         query = "SELECT * FROM users WHERE email = %s;"
         cursor.execute(query, (loginRequest.email,))
         user = cursor.fetchone()
-        print(user)
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         if not verify_password(loginRequest.password, user["password"]):

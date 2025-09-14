@@ -7,24 +7,24 @@ import logging
 logger = logging.getLogger(__name__)
 
 @tool
-def send_reminder_email(user_id: int, remind_at: str, message: str) -> str:
+def send_reminder_email(user_id: int, remind_at: datetime) -> str:
     """Log a reminder entry to the database for the user to be reminded at a specific datetime."""
     try:
-        remind_time = datetime.fromisoformat(remind_at)
+        remind_time = remind_at
 
         with get_db() as cursor:
             cursor.execute(
                 """
-                INSERT INTO reminders (user_id, time, timezone)
-                VALUES (%s, %s, %s)
+                INSERT INTO reminders (user_id, time)
+                VALUES (%s, %s)
                 """,
-                (user_id, remind_time, message)
+                (user_id, remind_time)
             )
 
         return f" Reminder logged for {remind_time.isoformat()}"
 
     except Exception as e:
-        logger.exception("Error logging reminder to database")
+        logger.exception(f"Error logging reminder to database: {str(e)}")
         return f"Failed to log reminder: {str(e)}"
 
 
